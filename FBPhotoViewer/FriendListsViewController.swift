@@ -8,8 +8,7 @@
 
 import UIKit
 import Accounts
-import FBPhotosKit
-import Alamofire
+import FBPhotoViewerKit
 
 /**
 *  友達一覧画面
@@ -20,11 +19,6 @@ class FriendListsViewController: BaseViewController {
     // MARK: - Properties
     /**************************************************************************/
     
-    override var account: ACAccount? {
-        didSet {
-            SocialManager.sharedManager.requestAboutMe()
-        }
-    }
     
     /**************************************************************************/
     // MARK: - View Life Cycle
@@ -34,7 +28,11 @@ class FriendListsViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        SocialManager.sharedManager.requestAboutMe()
+        SocialManager.sharedManager.requestAboutMeWithCompletion { (userModel: FBUserModel?, error: NSError!) -> Void in
+            
+            println(userModel?.description())
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {

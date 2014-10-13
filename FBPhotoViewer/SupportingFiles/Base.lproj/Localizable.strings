@@ -1,0 +1,8 @@
+/* 
+  Localizable.strings
+  FBPhotoViewer
+
+  Created by kyo__hei on 2014/10/13.
+  Copyright (c) 2014年 kyo__hei. All rights reserved.
+*/
+"errorNotGranted" = "You do not have permission to access Facebook account";

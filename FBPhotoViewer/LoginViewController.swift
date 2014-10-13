@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FBPhotosKit
+import FBPhotoViewerKit
 import Accounts
 
 class LoginViewController: BaseViewController {

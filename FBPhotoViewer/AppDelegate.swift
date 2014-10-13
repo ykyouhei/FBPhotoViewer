@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Accounts
+import FBPhotoViewerKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        var socialManager = SocialManager.sharedManager
+        if socialManager.accessGrantedWithAccountTypeIdentifier(ACAccountTypeIdentifierFacebook) {
+            println("アクセス承認済み")
+            SocialManager.sharedManager.requestAccessWithAccountTypeIdentifier(ACAccountTypeIdentifierFacebook, completion: { (accounts, error) -> Void in
+                
+                if error != nil {
+                    self.p_setRootViewControllerWithIdentifire(MainStoryboard.ViewControllerIdentifiers.loginViewController)
+                } else if accounts?.count == 0 {
+                    self.p_setRootViewControllerWithIdentifire(MainStoryboard.ViewControllerIdentifiers.loginViewController)
+                } else {
+                    self.p_setRootViewControllerWithIdentifire(MainStoryboard.ViewControllerIdentifiers.friendListsViewController)
+                }
+            })
+        } else {
+            p_setRootViewControllerWithIdentifire(MainStoryboard.ViewControllerIdentifiers.loginViewController)
+        }
+        
         return true
     }
 
@@ -39,6 +58,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    /**************************************************************************/
+    // MARK: - Private
+    /**************************************************************************/
+    
+    private func p_setRootViewControllerWithIdentifire(id: String) {
+        let storyboard = UIStoryboard(name: MainStoryboard.storyboardName, bundle: nil)
+        let navVC = window?.rootViewController as UINavigationController
+        let rootVC = storyboard.instantiateViewControllerWithIdentifier(id) as UIViewController
+        navVC.setViewControllers([rootVC], animated: false)
     }
 
 
